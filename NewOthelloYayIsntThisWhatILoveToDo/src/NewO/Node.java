@@ -16,7 +16,7 @@ public class Node {
 	public static boolean avaiable2 ;
 	public static Integer[] arr= {0,3,4,5};
 	public static Set<Integer> empty = new HashSet<Integer>(Arrays.asList( arr)) ;
-
+	
 	public Node(int [][] board)
 	{
 		//this function will never be call;
