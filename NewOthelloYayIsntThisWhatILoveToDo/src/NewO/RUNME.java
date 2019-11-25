@@ -19,7 +19,11 @@ public class RUNME {
 				int titleResult = Integer.parseInt(scan.next());
 				if(titleResult ==1)
 				{
-					
+					Node pvp = new Node();
+					pvp.printBoard(pvp.boardState);
+					for(int i = 0 ; i <pvp.avaiableUpdate(pvp.boardState).length;i++) {
+						System.out.print(pvp.avaiableUpdate(pvp.boardState)[i]+"\t");
+					}
 				}
 				else if(titleResult ==2)
 				{
