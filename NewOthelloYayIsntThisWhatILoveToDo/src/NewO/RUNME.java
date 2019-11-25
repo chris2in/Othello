@@ -24,6 +24,11 @@ public class RUNME {
 					for(int i = 0 ; i <pvp.avaiableUpdate(pvp.boardState).length;i++) {
 						System.out.print(pvp.avaiableUpdate(pvp.boardState)[i]+"\t");
 					}
+					System.out.println();
+					while(true)
+					{
+						
+					}
 				}
 				else if(titleResult ==2)
 				{
