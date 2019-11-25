@@ -27,7 +27,7 @@ public class RUNME {
 					System.out.println();
 					while(true)
 					{
-						System.out.println();
+						
 					}
 				}
 				else if(titleResult ==2)
