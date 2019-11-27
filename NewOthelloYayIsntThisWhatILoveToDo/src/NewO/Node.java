@@ -61,14 +61,17 @@ public class Node {
 				}
 				if (board[i][o] == 3) {
 					ava1++;
+					
 					if(this.turn)
 					{
+//						System.out.println("1 s turn");
 						move.add(i*10+o);
 					}
 				} else if (board[i][o] == 4) {
 					ava2++;
 					if(!this.turn)
 					{ 
+//						System.out.println("2 s turn");
 						move.add(i*10+o);
 					}
 				} else if (board[i][o] == 5) {
@@ -99,7 +102,7 @@ public class Node {
 				this.turn = true;
 			}
 		}
-		
+//		System.out.println("move has "+move);
 		Integer [] result = new Integer[move.size()];
 		move.toArray(result);
 		
@@ -486,12 +489,12 @@ public class Node {
 
 			if (empty.contains(board[row][col])) {
 
-				if (turn) {
+				if (this.turn) {
 
 					if (board[row][col] == 5 || board[row][col] == 3) {
 						board[row][col] = 1;
 //						System.out.println(TheBoard[row][col]);
-						turn = false;
+						this.turn = false;
 						count++;
 					} else {
 						System.out.println("You cant put it here1");
@@ -500,7 +503,7 @@ public class Node {
 				} else {
 					if (board[row][col] == 5 || board[row][col] == 4) {
 						board[row][col] = 2;
-						turn = true;
+						this.turn = true;
 						count++;
 					} else {
 						System.out.println("You cant put it here2");
