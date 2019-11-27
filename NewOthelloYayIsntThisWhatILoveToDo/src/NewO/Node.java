@@ -68,7 +68,7 @@ public class Node {
 				} else if (board[i][o] == 4) {
 					ava2++;
 					if(!this.turn)
-					{
+					{ 
 						move.add(i*10+o);
 					}
 				} else if (board[i][o] == 5) {
