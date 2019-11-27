@@ -8,14 +8,16 @@ import java.util.Set;
 public class Node {
 	public int score;
 	public int level ;
-	public int[][] boardState;
+	public int[][] boardState= new int[8][8];
 	public  ArrayList<Integer> aviable = new ArrayList<Integer>();
 	public ArrayList<Node> child = new ArrayList<Node>();
 	public boolean turn= true;
-	public static boolean avaiable1 ;
-	public static boolean avaiable2 ;
+	public int count;
+	public  boolean avaiable1 ;
+	public  boolean avaiable2 ;
 	public static Integer[] arr= {0,3,4,5};
 	public static Set<Integer> empty = new HashSet<Integer>(Arrays.asList( arr)) ;
+	
 	
 	public Node(int [][] board)
 	{
@@ -24,13 +26,20 @@ public class Node {
 		this.score = 0;
 		this.level = 0;
 		this.boardState = board;
-		avaiableUpdate(this.boardState);
+		availableUpdate(this.boardState);
 		this.turn = true;
 		System.out.print("");
 	}
 
 	
-	
+	public Node()
+	{
+		//pvp only 
+		gameStart(this.boardState);
+		this.count = 4;
+		
+		
+	}
 	
 	
 	
@@ -40,7 +49,7 @@ public class Node {
 	
 	
 	//from this point on, old stuff
-	public  Integer[] avaiableUpdate(int[][] board) {
+	public  Integer[] availableUpdate(int[][] board) {
 		Set<Integer> move = new HashSet<Integer>();
 		int ava1 = 0;
 		int ava2 = 0;
@@ -97,7 +106,7 @@ public class Node {
 		return result;
 	}
 
-	public static int check(int row, int col,int[][] board) {
+	public  int check(int row, int col,int[][] board) {
 		// a set that contains the possible move for one grid
 		Set<Integer> collection = new HashSet<Integer>();
 		if (board[row][col] != 1 || board[row][col] != 2) {
@@ -121,7 +130,7 @@ public class Node {
 
 	}
 
-	public static int horCheck(int row, int col,int[][] board) {
+	public  int horCheck(int row, int col,int[][] board) {
 		Set<Integer> possible = new HashSet<Integer>();
 
 		// if on the left most col, check right
@@ -140,7 +149,7 @@ public class Node {
 	}
 	
 	
-	public static int checkLeft(int row, int col,int[][] board) {
+	public  int checkLeft(int row, int col,int[][] board) {
 		int iter = 0;
 		// if the one on left is empty or same to current, then there is no possible
 		// move for it
@@ -165,7 +174,7 @@ public class Node {
 
 	}
 
-	public static int checkRight(int row, int col,int[][] board) {
+	public  int checkRight(int row, int col,int[][] board) {
 		int iter = 0;
 		// if the one on right is empty or same to current, then there is no possible
 		// move for it
@@ -415,7 +424,7 @@ public class Node {
 	
 	
 	
-	public static int possibleSet(Set<Integer> possible) {
+	public static  int possibleSet(Set<Integer> possible) {
 		if (possible.contains(5) || (possible.contains(3) && possible.contains(4))) {
 			// where both 1 and 2 is aviable
 			return 5;
@@ -432,7 +441,7 @@ public class Node {
 	}
 
 	
-	public static int to34(int input) {
+	public static  int to34(int input) {
 
 		// to check avaiable place's avaiable number
 		if (input == 1) {
@@ -445,7 +454,232 @@ public class Node {
 		}
 	}
 
+	public  void gameStart(int[][] board) {
+		for (int i = 0; i < board.length; i++) {
+			for (int o = 0; o < board[0].length; o++) {
+				board[i][o] = 0;
+			}
+		}
+
+		// standard beginning
+
+		board[3][3] = 2;
+		board[4][4] = 2;
+		board[3][4] = 1;
+		board[4][3] = 1;
+	}
 	
+	public  void printBoard(int[][] board)
+	{
+		for(int i = 0 ; i <board.length;i++) {
+			for(int o = 0 ; o <board[0].length;o++) {
+				System.out.print(board[i][o]+"\t");
+			}
+			System.out.println("\n");
+		}
+	}
 	
+	public int place (int row, int col , int[][] board ,boolean turn)
+	{
+		int numOfFlipMade= 0;
+		if (row < board.length && row >= 0 && col < board.length && col >= 0) {
+
+			if (empty.contains(board[row][col])) {
+
+				if (turn) {
+
+					if (board[row][col] == 5 || board[row][col] == 3) {
+						board[row][col] = 1;
+//						System.out.println(TheBoard[row][col]);
+						turn = false;
+						count++;
+					} else {
+						System.out.println("You cant put it here1");
+					}
+
+				} else {
+					if (board[row][col] == 5 || board[row][col] == 4) {
+						board[row][col] = 2;
+						turn = true;
+						count++;
+					} else {
+						System.out.println("You cant put it here2");
+					}
+					
+				}
+
+				numOfFlipMade = flip(row, col,board);
+
+			} else {
+				System.out.println("invalid Move");
+			}
+
+		} else {
+
+			System.out.println("The TheBoard size is " + board.length
+					+ ". Please input a postive integer that is less than it and ensure it is in the aviable move");
+		}
+		return numOfFlipMade;
+	}
+	
+	public static int flip(int row, int col,int[][] TheBoard) {
+		int iter = 0;
+		int count = 0;
+		// checking leftward
+		while (col - iter >= 0) {
+			if (TheBoard[row][col - iter] != TheBoard[row][col] && !empty.contains(TheBoard[row][col - iter])) {
+
+			} else if (TheBoard[row][col - iter] == TheBoard[row][col] && iter >= 1) {
+				for (int i = 1; i < iter; i++) {
+					TheBoard[row][col - i] = TheBoard[row][col];
+					count++;
+				}
+				break;
+			} else if (empty.contains(TheBoard[row][col - iter])) {
+				break;
+			}
+			iter++;
+		}
+
+		// checking rightward
+		iter = 0;
+		while (col + iter < TheBoard.length) {
+
+			if (TheBoard[row][col + iter] != TheBoard[row][col] && !empty.contains(TheBoard[row][col + iter])) {
+
+			} else if (TheBoard[row][col + iter] == TheBoard[row][col] && iter >= 1) {
+
+				for (int i = 1; i < iter; i++) {
+
+					TheBoard[row][col + i] = TheBoard[row][col];
+					count++;
+				}
+				break;
+			} else if (empty.contains(TheBoard[row][col + iter])) {
+				break;
+			}
+			iter++;
+		}
+
+		// checking downward
+		iter = 0;
+		while (row + iter < TheBoard.length) {
+
+			if (TheBoard[row + iter][col] != TheBoard[row][col] && !empty.contains(TheBoard[row + iter][col])) {
+
+			} else if (TheBoard[row + iter][col] == TheBoard[row][col] && iter >= 1) {
+
+				for (int i = 1; i < iter; i++) {
+
+					TheBoard[row + i][col] = TheBoard[row][col];
+					count++;
+				}
+				break;
+			} else if (empty.contains(TheBoard[row + iter][col])) {
+				break;
+			}
+			iter++;
+		}
+
+		// checking uptward
+		iter = 0;
+		while (row - iter >= 0) {
+
+			if (TheBoard[row - iter][col] != TheBoard[row][col] && !empty.contains(TheBoard[row - iter][col])) {
+
+			} else if (TheBoard[row - iter][col] == TheBoard[row][col] && iter >= 1) {
+
+				for (int i = 1; i < iter; i++) {
+
+					TheBoard[row - i][col] = TheBoard[row][col];
+					count++;
+				}
+				break;
+			} else if (empty.contains(TheBoard[row - iter][col])) {
+				break;
+			}
+			iter++;
+		}
+
+		// continue with upleft, upright, down left, down right
+		// upleft
+		iter = 0;
+		while (row - iter >= 0 && col - iter >= 0) {
+			if (TheBoard[row - iter][col - iter] != TheBoard[row][col] && !empty.contains(TheBoard[row - iter][col - iter])) {
+
+			} else if (TheBoard[row - iter][col - iter] == TheBoard[row][col] && iter >= 1) {
+				for (int i = 1; i < iter; i++) {
+					TheBoard[row - i][col - i] = TheBoard[row][col];
+					count++;
+				}
+				break;
+			} else if (empty.contains(TheBoard[row - +iter][col - +iter])) {
+				break;
+			}
+
+			iter++;
+		}
+
+		// upright
+		iter = 0;
+		while (row - iter >= 0 && col + iter < TheBoard.length) {
+			if (TheBoard[row - iter][col + iter] != TheBoard[row][col] && !empty.contains(TheBoard[row - iter][col + iter])) {
+
+			} else if (TheBoard[row - iter][col + iter] == TheBoard[row][col] && iter >= 1) {
+				for (int i = 1; i < iter; i++) {
+					TheBoard[row - i][col + i] = TheBoard[row][col];
+					count++;
+				}
+				break;
+			} else if (empty.contains(TheBoard[row - +iter][col + iter])) {
+				break;
+			}
+
+			iter++;
+		}
+
+		// leftdown
+		iter = 0;
+		while (row + iter < TheBoard.length && col - iter >= 0) {
+			if (TheBoard[row + iter][col - iter] != TheBoard[row][col] && !empty.contains(TheBoard[row + iter][col - iter])) {
+
+			} else if (TheBoard[row + iter][col - iter] == TheBoard[row][col] && iter >= 1) {
+				for (int i = 1; i < iter; i++) {
+					TheBoard[row + i][col - i] = TheBoard[row][col];
+					count++;
+				}
+				break;
+			} else if (empty.contains(TheBoard[row + iter][col - iter])) {
+				break;
+			}
+
+			iter++;
+		}
+
+		// rightdown
+		iter = 0;
+		while (row + iter < TheBoard.length && col + iter < TheBoard.length) {
+			if (TheBoard[row + iter][col + iter] != TheBoard[row][col] && !empty.contains(TheBoard[row + iter][col + iter])) {
+
+			} else if (TheBoard[row + iter][col + iter] == TheBoard[row][col] && iter >= 1) {
+				for (int i = 1; i < iter; i++) {
+					TheBoard[row + i][col + i] = TheBoard[row][col];
+					count++;
+				}
+
+				break;
+			} else if (empty.contains(TheBoard[row + iter][col + iter])) {
+				break;
+			}
+
+			iter++;
+		}
+		if(row==2 && col ==2)
+		{
+			System.out.println(count);
+		}
+		return count;
+
+	}
 	
 }
