@@ -55,6 +55,9 @@ public class RUNME {
 				}
 				else if(titleResult ==2)
 				{
+					//good luck with the pve mode 
+					Node root = new Node();
+					root.availableUpdate(root.boardState);
 					
 				}
 				else if(titleResult ==3)
