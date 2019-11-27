@@ -20,14 +20,37 @@ public class RUNME {
 				if(titleResult ==1)
 				{
 					Node pvp = new Node();
+					pvp.availableUpdate(pvp.boardState);
 					pvp.printBoard(pvp.boardState);
-					for(int i = 0 ; i <pvp.avaiableUpdate(pvp.boardState).length;i++) {
-						System.out.print(pvp.avaiableUpdate(pvp.boardState)[i]+"\t");
+					for(int i = 0 ; i <pvp.availableUpdate(pvp.boardState).length;i++) {
+						System.out.print(pvp.availableUpdate(pvp.boardState)[i]+"\t");
 					}
 					System.out.println();
-					while(true)
+					while(true&&pvp.count < 64 &&(pvp.avaiable1 || pvp.avaiable2))
 					{
+						System.out.println("enter your choice, or -1 to quit ");
+						try
+						{
+							int move = Integer.parseInt(scan.next());
+							if(move == -1)
+							{
+								break;
+							}
+							int row = move /10;
+							int col = move %10;
+							
+							pvp.place(row,col,pvp.boardState,pvp.turn);
+							
+						}catch(NumberFormatException e)
+						{
+							System.out.println("Enter a number ");
+						}
 						
+						for (int i = 0 ; i  <pvp.availableUpdate(pvp.boardState).length;i++)
+						{
+							System.out.print(pvp.availableUpdate(pvp.boardState)[i]+"\t");
+						}
+						pvp.printBoard(pvp.boardState);
 					}
 				}
 				else if(titleResult ==2)
