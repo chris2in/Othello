@@ -46,6 +46,8 @@ public class RUNME {
 							System.out.println("Enter a number ");
 						}
 						
+						
+						
 						for (int i = 0 ; i  <pvp.availableUpdate(pvp.boardState).length;i++)
 						{
 							System.out.print(pvp.availableUpdate(pvp.boardState)[i]+"\t");
@@ -57,7 +59,27 @@ public class RUNME {
 				{
 					//good luck with the pve mode 
 					Node root = new Node();
-					root.availableUpdate(root.boardState);
+//					System.out.println(root.availableUpdate(root.boardState).toString());
+					Integer[] avilable = root.availableUpdate(root.boardState);
+					Node[] child =new Node[avilable.length];
+					for(int i = 0 ; i <avilable.length;i++) {
+						System.out.print(avilable[i]+"\t");
+						child[i] = new Node(avilable[i],root.boardState,root);
+								
+					}
+					System.out.println("THE ROOT");
+					root.printBoard(root.boardState);
+					
+					System.out.println("ROOT OVER");
+					
+					
+					
+					for (int i = 0 ; i < child.length; i++)
+					{
+						System.out.println("board with result "+avilable[i]);
+						child[i].printBoard(child[i].boardState);
+					}
+					System.out.println();
 					
 				}
 				else if(titleResult ==3)
