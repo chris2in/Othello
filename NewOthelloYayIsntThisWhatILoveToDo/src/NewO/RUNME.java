@@ -75,7 +75,7 @@ public class RUNME {
 						System.out.println("I CHOOSE "+avilable[max]);
 						root.place(avilable[max] / 10, avilable[max] % 10, root.boardState, root.turn);
 						root.availableUpdate(root.boardState);
-						root.printBoard(root.boardState);
+						root.printBoard(root.boardState) ; 
 						for(int i = 0 ; i < root.availableUpdate(root.boardState).length;i++)
 						{
 							System.out.print(root.availableUpdate(root.boardState)[i] +"\t");
